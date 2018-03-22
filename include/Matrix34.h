@@ -4,6 +4,7 @@ class Vector3D;
 class Quaternion;
 class Matrix34 {
 private:
+	friend class Matrix33;
 	friend class Matrix44;
 	friend class Batch;
 	double m00, m01, m02, m03;

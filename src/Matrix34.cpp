@@ -111,7 +111,7 @@ void Matrix34::setQuaternionRotaion(const Quaternion& q) {
 	q2_2 = q2*q2;
 	q3_2 = q3*q3;
 	q0_2 = q0*q0;
-	//cout << "x" << x << "y" << y << "z" << z << "w" << w << endl;
+	
 	m00 = q0_2 + q1_2 - q2_2 - q3_2;
 	m01 = 2.0*(q1*q2 - q0*q3);
 	m02 = 2.0*(q1*q3 + q0*q2);
@@ -140,10 +140,6 @@ void Matrix34::setQuaternionRotaion(const Quaternion& q) {
 		yAngle = GameLib::atan2(m20, m22);
 		zAngle = GameLib::atan2(m01, m11);
 	}
-	//setIdentity();
-	//rotateY(yAngle);
-	//(xAngle);
-	//rotateZ(zAngle);
 }
 void Matrix34::rotateByQuaternion(const Quaternion& q) {
 	Matrix34 m;

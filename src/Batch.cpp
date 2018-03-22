@@ -13,6 +13,7 @@
 #include "Texture.h"
 #include "GraphicsDatabase.h"
 #include "Quaternion.h"
+#include "Matrix33.h"
 #include <sstream>
 using namespace std;
 using namespace GameLib;
@@ -233,7 +234,12 @@ void Batch::draw(const Matrix44 & projectionViewMatrix,
 	for (int i = 0; i < vertexSize; ++i) {
 		pvwm.multiply(&fp4[i * 4], *vertexBuffer->getPosition(i));
 	}
-
+	//Matrix33 invtWm;
+	//invtWm.setReductionTransInverse(worldMatrix);
+	Matrix33 invM;
+	invM.setReductionInverse(worldMatrix);
+	Matrix33 invTransWm;
+	invTransWm.setReductionTransInverse(worldMatrix);
 	if (shader == Batch::FLAT_SHADING) {
 		int triangleNumber = indexBuffer->getSize() / 3;
 		for (int i = 0; i < triangleNumber; ++i) {
@@ -267,12 +273,17 @@ void Batch::draw(const Matrix44 & projectionViewMatrix,
 
 		Matrix34 wmNormal = worldMatrix; //–@ü‚Ì•ÏŠ·‚È‚Ì‚Å‰ñ“]‚ÆŠg‘å‚¾‚¯
 		wmNormal.m03 = wmNormal.m13 = wmNormal.m23 = 0.0;
+		Vector3D invLight;
+		invM.multiply(&invLight, lightVector);
+		Vector3D invEye;
+		invM.multiply(&invEye, eyeVector);
 		unsigned* colors = new unsigned[vertexSize];
 		//’¸“_‚²‚Æ‚ÉF‚ÌŒvŽZ
 		for (int i = 0; i < vertexSize; ++i) {
-			Vector3D wNormal;
-			wmNormal.multiply(&wNormal, normals[i]);
-			wNormal.normalize();
+			Vector3D worldNormal;
+			
+			invTransWm.multiply(&worldNormal, normals[i]);
+			worldNormal.normalize();
 			colors[i] = lighting(
 				lightVector, 
 				lightColor,
@@ -281,7 +292,7 @@ void Batch::draw(const Matrix44 & projectionViewMatrix,
 				specular,
 				specularPow,
 				eyeVector,
-				wNormal);
+				worldNormal);
 		}
 		int triangleNumber = indexBuffer->getSize() / 3;
 		for (int i = 0; i < triangleNumber; ++i) {
@@ -297,7 +308,6 @@ void Batch::draw(const Matrix44 & projectionViewMatrix,
 
 	SAFE_DELETE_ARRAY(fp4);
 	SAFE_DELETE_ARRAY(wv);
-
 
 }
 void Batch::draw(
