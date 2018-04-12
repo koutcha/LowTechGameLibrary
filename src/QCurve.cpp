@@ -46,7 +46,7 @@ QCurve::QCurve(const Element &e)
 
 QCurve::~QCurve()
 {
-	SAFE_DELETE_ARRAY(_data);
+	//virtual ~Curve() ‚Åƒf[ƒ^‚ğ”jŠü
 }
 
 Vector3D QCurve::getAxis() const

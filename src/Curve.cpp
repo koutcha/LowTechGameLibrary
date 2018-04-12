@@ -98,13 +98,14 @@ const double Curve::getValue(double time) const
 			return (p1 - p0)*time + p0;
 		}
 	}
-
+	return 0;
 }
 
 Curve::Type Curve::getType() const
 {
 	return _type;
 }
+
 
 Curve::Data::Data()
 {

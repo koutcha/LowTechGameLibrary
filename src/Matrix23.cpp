@@ -1,5 +1,5 @@
 #include "Matrix23.h"
-#include "Vector2D.h";
+#include "Vector2D.h"
 #include "GameLib\Math.h"
 using namespace std;
 using namespace GameLib;

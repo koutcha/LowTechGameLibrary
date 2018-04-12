@@ -84,32 +84,65 @@ unsigned lightingWithPointLight(
 	int lightNumber,
 	const Vector3D& ambient,
 	const Vector3D& diffuseColor,
+	const Vector3D& specular,
+	double specularPow,
+	const Vector3D& eyeVector,
 	const Vector3D& normal,
 	const Vector3D& vertexPositon) {
 
 	Vector3D color(0, 0, 0);
 	Vector3D normalLight;
 	Vector3D colorSum(0,0,0);
+
+	Vector3D specularSum(0, 0, 0);
+	Vector3D toEye = eyeVector;
+	toEye *= -1.0;
+	//正規化
+	toEye.normalize();
+	Vector3D half;
+
+	double specularCosineSum = 0;
+
 	for (int i = 0; i < lightNumber; ++i) {
 		normalLight.setSub(lightResorces[i].getPosition(), vertexPositon);
 		double d = normalLight.length()*normalLight.length();
 		normalLight.normalize();
 		double cosine = normal.dot(normalLight);
-		if (cosine < 0.0) {
-			cosine = 0.0;
-		}
+		double itensity = clamp01(cosine);
 		Vector3D lightColor = lightResorces[i].getColor();
-		cosine /= d;
+		itensity /= d;
 
-		lightColor *= cosine;
+		lightColor *= itensity;
 		colorSum += lightColor;
+
+
+		half.setAdd(toEye, normalLight);
+		half.normalize();
+		//反射光のコサイン
+		double specCosine = normal.dot(half);
+
+		itensity = pow(clamp01(specCosine), specularPow);
+
+		Vector3D tempSpecular;
+		tempSpecular.x = specular.x*itensity*lightColor.x/d;
+		tempSpecular.y = specular.y*itensity*lightColor.y/d; 
+		tempSpecular.z = specular.z*itensity*lightColor.z/d;
+		specularSum += tempSpecular;
 	}
 
+	
 
 
-	color.x = colorSum.x*diffuseColor.x + ambient.x;
-	color.y = colorSum.y*diffuseColor.y + ambient.y;
-	color.z = colorSum.z*diffuseColor.z + ambient.z;
+	//ハーフベクトル
+
+	half.setAdd(toEye, normalLight);
+	half.normalize();
+	//反射光のコサイン
+	double cosineSpecular = normal.dot(half);
+
+	color.x = colorSum.x*diffuseColor.x +specularSum.x + ambient.x;
+	color.y = colorSum.y*diffuseColor.y +specularSum.y + ambient.y;
+	color.z = colorSum.z*diffuseColor.z +specularSum.z + ambient.z;
 
 	color.x = clamp01(color.x);
 	color.y = clamp01(color.y);
@@ -236,10 +269,8 @@ void Batch::draw(const Matrix44 & projectionViewMatrix,
 	}
 	//Matrix33 invtWm;
 	//invtWm.setReductionTransInverse(worldMatrix);
-	Matrix33 invM;
-	invM.setReductionInverse(worldMatrix);
-	Matrix33 invTransWm;
-	invTransWm.setReductionTransInverse(worldMatrix);
+	
+
 	if (shader == Batch::FLAT_SHADING) {
 		int triangleNumber = indexBuffer->getSize() / 3;
 		for (int i = 0; i < triangleNumber; ++i) {
@@ -271,12 +302,8 @@ void Batch::draw(const Matrix44 & projectionViewMatrix,
 	else if(shader == Batch::GOURAND_SHADING)
 	{
 
-		Matrix34 wmNormal = worldMatrix; //法線の変換なので回転と拡大だけ
-		wmNormal.m03 = wmNormal.m13 = wmNormal.m23 = 0.0;
-		Vector3D invLight;
-		invM.multiply(&invLight, lightVector);
-		Vector3D invEye;
-		invM.multiply(&invEye, eyeVector);
+		Matrix33 invTransWm;
+		invTransWm.setReductionTransInverse(worldMatrix);
 		unsigned* colors = new unsigned[vertexSize];
 		//頂点ごとに色の計算
 		for (int i = 0; i < vertexSize; ++i) {
@@ -374,7 +401,7 @@ void Batch::draw(
 			normal.normalize();
 			
 
-			unsigned c = lightingWithPointLight(lightSources, lightNumber, ambient, diffuseColor, normal, p03);
+			unsigned c = lightingWithPointLight(lightSources, lightNumber, ambient, diffuseColor,specular,spcularPow, eyeVector,normal, p03);
 			f.drawTriangle3DH(&fp4[i0 * 4], &fp4[i1 * 4], &fp4[i2 * 4], &vertexBuffer->getUV(i0)->x, &vertexBuffer->getUV(i1)->x, &vertexBuffer->getUV(i2)->x, c, c, c);
 		}
 	}
@@ -387,9 +414,10 @@ void Batch::draw(
 		//頂点ごとに色の計算
 		for (int i = 0; i < vertexSize; ++i) {
 			Vector3D wNormal;
+
 			wmNormal.multiply(&wNormal, normals[i]);
 			wNormal.normalize();
-			colors[i] = lightingWithPointLight(lightSources, lightNumber, ambient, diffuseColor, wNormal, wv[i]);
+			colors[i] = lightingWithPointLight(lightSources, lightNumber, ambient, diffuseColor, specular,spcularPow,eyeVector,wNormal, wv[i]);
 		}
 		int triangleNumber = indexBuffer->getSize() / 3;
 		for (int i = 0; i < triangleNumber; ++i) {

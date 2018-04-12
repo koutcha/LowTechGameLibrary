@@ -31,7 +31,7 @@ public:
 
 
 
-	void operator *=(const Matrix34& m);
+	Matrix34& operator *=(const Matrix34& m);
 
 	void setMul(const Matrix34 & m1, const Matrix34 & m2);
 

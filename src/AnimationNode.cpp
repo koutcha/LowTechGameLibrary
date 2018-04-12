@@ -57,13 +57,8 @@ void AnimationNode::getData(Vector3D * position, Vector3D * angle, Vector3D * sc
 		Curve::Type type = _curves[i]->getType();
 	
 		double value = _curves[i]->getValue(time);
-		if (type == Curve::ROTATION_Q) {
-			QCurve* q = static_cast<QCurve*>(_curves[i]);
-			*qAxis = q->getAxis();
-			*qValue = value;
-			*useQuartanion = true;
-			continue;
-		}
+
+
 		switch (type)
 		{
 		case Curve::ROTATION_X:
@@ -92,6 +87,11 @@ void AnimationNode::getData(Vector3D * position, Vector3D * angle, Vector3D * sc
 			break;
 		case Curve::TRANSLATION_Z:
 			position->z = value;
+			break;
+		case Curve::ROTATION_Q:
+			*qAxis = _curves[i]->getAxis();
+			*qValue = value;
+			*useQuartanion = true;
 			break;
 		case Curve::NONE:
 			break;

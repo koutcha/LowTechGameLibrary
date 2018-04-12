@@ -6,7 +6,7 @@ class VertexBuffer;
 class IndexBuffer;
 class Matrix44;
 class Matrix34;
-class Sphere {
+class UVSphere {
 private:
 	Vector3D _position;
 	Vector3D _angle;
@@ -16,9 +16,9 @@ private:
 	IndexBuffer* _index;
 
 public:
-	Sphere(int n,double r);
-	Sphere(bool isInverted);
-	~Sphere();
+	UVSphere(int n,double r);
+	UVSphere(bool isInverted);
+	~UVSphere();
 	Batch* getBatch()const;
 	void draw(
 		const Matrix44& projectionViewMatrix,

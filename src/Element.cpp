@@ -42,7 +42,7 @@ Element::Element(Tag * beginTag, const char ** p,const char* e)
 		}
 	}
 	cout<<"====children:" << children.size() << endl;
-	for (int i = 0; i < children.size(); ++i) {
+	for (unsigned i = 0; i < children.size(); ++i) {
 		cout << *(getChild(i)->getName())->c_str() << endl;
 	}
 	cout << "attribute" << attributes.size() << endl;
@@ -53,10 +53,10 @@ Element::~Element()
 	
 	cout << "デストラクト" <<  name.c_str() <<"  cn:" << children.size() <<endl;
 
-	for (int i = 0; i < children.size(); ++i) {
+	for (unsigned i = 0; i < children.size(); ++i) {
 		SAFE_DELETE(children[i]);
 	}
-	for (int i = 0; i < attributes.size(); ++i) {
+	for (unsigned i = 0; i < attributes.size(); ++i) {
 		SAFE_DELETE(attributes[i]);
 	}
 }

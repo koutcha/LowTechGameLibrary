@@ -66,28 +66,36 @@ void Vector3D::normalize() {
 double Vector3D::length() {
 	return sqrt(x*x + y*y + z*z);
 }
-void Vector3D::operator+=(const Vector3D & v)
+Vector3D& Vector3D::operator+=(const Vector3D & v)
 {
 	x += v.x;
 	y += v.y;
 	z += v.z;
+	
+	return *this;
 }
 
-void Vector3D::operator-=(const Vector3D & v)
+Vector3D& Vector3D::operator-=(const Vector3D & v)
 {
 	x -= v.x;
 	y -= v.y;
 	z -= v.z;
+
+	return *this;
 }
 
-void Vector3D::operator=(const Vector3D & v)
+Vector3D& Vector3D::operator=(const Vector3D & v)
 {
 	x = v.x;
 	y = v.y;
 	z = v.z;
+
+	return *this;
 }
-void Vector3D::operator*=(double s) {
+Vector3D& Vector3D::operator*=(double s) {
 	x *= s;
 	y *= s;
 	z *= s;
+
+	return *this;
 }

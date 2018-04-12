@@ -184,7 +184,7 @@ void Matrix34::scale(const Vector3D & v)
 	*this  *= m;
 }
 
-void Matrix34::operator*=(const Matrix34 & m)
+Matrix34& Matrix34::operator*=(const Matrix34 & m)
 {
 	double tx, ty, tz;
 	//ÇOçsñ⁄
@@ -212,6 +212,7 @@ void Matrix34::operator*=(const Matrix34 & m)
 	m22 = tx*m.m02 + ty*m.m12 + tz*m.m22;
 	m23 = tx*m.m03 + ty*m.m13 + tz*m.m23 + m23;
 
+	return *this;
 
 }
 void Matrix34::setMul(const Matrix34& m1,const Matrix34& m2) {

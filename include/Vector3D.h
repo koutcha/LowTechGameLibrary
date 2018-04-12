@@ -16,11 +16,11 @@ public:
 
 	double length();
 
-	void operator+=(const Vector3D& v);
-	void operator -=(const Vector3D& v);
-	void operator = (const Vector3D& v);
+	Vector3D& operator+=(const Vector3D& v);
+	Vector3D& operator -=(const Vector3D& v);
+	Vector3D& operator = (const Vector3D& v);
 
-	void operator*=(double s);
+	Vector3D& operator*=(double s);
 
 	double x;
 	double y;

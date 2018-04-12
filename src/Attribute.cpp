@@ -35,18 +35,20 @@ double Attribute::getDoubleValue() const
 
 void Attribute::getIntValues(int * out,int outSize) const
 {
-	vector<string> values;
+	vector<string> values(10);
 	string element;
-	for (int i = 0; i < value.size(); i++) {
+	int outCount = 0;
+	for (unsigned i = 0; i < value.size(); i++) {
 		if (value[i] == ',') {
-			values.push_back(element);
+			values[outCount] = element;
 			element.clear();
+			outCount++;
 		}
 		else {
 			element += value[i];
 		}		
 	}
-	values.push_back(element);
+	values[outCount] = element;
 	for (int i = 0; i < outSize; i++) {
 		out[i] = stoi(values[i]);
 		cout << "out" << out[i] << endl;
@@ -55,21 +57,21 @@ void Attribute::getIntValues(int * out,int outSize) const
 
 void Attribute::getDoubleValues(double * out,int outSize) const
 {
-	vector<string> values;
+	vector<string> values(10);
 	string element;
-	for (int i = 0; i < value.size(); i++) {
+	int outCount = 0;
+	for (unsigned i = 0; i < value.size(); i++) {
 		if (value[i] == ',') {
-			values.push_back(element);
+			values[outCount] = element;
 			element.clear();
+			outCount++;
 		}
 		else {
 			element += value[i];
 		}
 	}
-
-	values.push_back(element);
-	
-	for (int i = 0; i <outSize; i++) {
+	values[outCount] = element;
+	for (int i = 0; i < outSize; i++) {
 		out[i] = stod(values[i]);
 		cout << "out" << out[i] << endl;
 	}

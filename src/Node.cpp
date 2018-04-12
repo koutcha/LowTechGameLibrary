@@ -20,7 +20,7 @@ Node::Node() :
 	_useQuaternion(false),
 	_scale(1.0, 1.0, 1.0),
 	_color(1.0,1.0,1.0),
-	_specular(1.0,1.0,1.0),
+	_specular(5.0,5.0,5.0),
 	_specularPow(50),
 	_shader(Batch::GOURAND_SHADING)
 {
@@ -37,19 +37,28 @@ Node::Node(const Batch * batch, int chilerenNumber):
 	_qAngle(0.0),
 	_useQuaternion(false),
 	_scale(1.0,1.0,1.0),
-	_color(1.0, 0.0, 1.0),
+	_color(1.0, 1.0, 1.0),
 	_specular(1.0, 1.0, 1.0),
 	_specularPow(50),
 	_shader(Batch::GOURAND_SHADING)
 {
-	_children = new Node*[chilerenNumber];
+	if (chilerenNumber != 0) {
+		_children = new Node*[chilerenNumber];
+	}
+	else {
+		_children = nullptr;
+	}
+	
 }
 
 Node::~Node()
 {
-	//ポインタ配列の破毀(ポインタの先の実態はtreeで破毀
-	SAFE_DELETE_ARRAY(_children);
-	_batch = 0;
+	if (_children != nullptr) 
+	{
+		SAFE_DELETE_ARRAY(_children);
+	}
+	
+	_batch = nullptr;
 
 }
 
@@ -198,9 +207,13 @@ const string * Node::getName() const
 {
 	return &_name;
 }
+Batch::ShadingMode Node::getShader() const
+{
+	return _shader;
+}
 void Node::writeChildrenConsole()const {
 	cout << _name.c_str() << " children" << endl;
-	for (int i = 0; i < _childrenNumber; ++i) {
+	for (unsigned i = 0; i < _childrenNumber; ++i) {
 		cout << i << ": " << _children[i]->getName()->c_str() << endl;
 	}
 }

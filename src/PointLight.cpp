@@ -12,12 +12,12 @@ PointLight::~PointLight()
 {
 }
 
-void PointLight::setColor(Vector3D& color)
+void PointLight::setColor(const Vector3D& color)
 {
 	_color = color;
 }
 
-void PointLight::setPosition(Vector3D& position)
+void PointLight::setPosition(const Vector3D& position)
 {
 	_position = position;
 }

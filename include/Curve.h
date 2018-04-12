@@ -1,5 +1,6 @@
 #ifndef CURVE_H
 #define CURVE_H
+#include "Vector3D.h"
 class Element;
 class Curve {
 public:
@@ -18,10 +19,10 @@ public:
 	};
 	Curve();
 	Curve(const Element&);
-	~Curve();
+	virtual ~Curve();
 	const double getValue(double)const;
 	Type getType()const;
-
+	virtual Vector3D getAxis() const { return Vector3D(0, 0, 0); };
 protected:
 	struct Data
 	{
@@ -30,6 +31,7 @@ protected:
 		 double _time;
 		 double _value;
 	}; 
+	
 	Data* _data;
 	int _dataNumber;
 	Type _type;

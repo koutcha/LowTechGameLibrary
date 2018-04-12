@@ -16,28 +16,32 @@ Vector2D::Vector2D(double aX, double aY):x(aX),y(aY)
 
 
 
-void Vector2D::operator+=(const Vector2D & v)
+Vector2D& Vector2D::operator+=(const Vector2D & v)
 {
 	x += v.x;
 	y += v.y;
+	return *this;
 }
 
-void Vector2D::operator-=(const Vector2D & v)
+Vector2D& Vector2D::operator-=(const Vector2D & v)
 { 
 	x -= v.x;
 	y -= v.y;
+	return *this;
 }
 
-void Vector2D::operator=(const Vector2D & v)
+Vector2D& Vector2D::operator=(const Vector2D & v)
 {
 	x = v.x;
 	y = v.y;
+	return *this;
 }
 
-void Vector2D::operator*=(double s)
+Vector2D& Vector2D::operator*=(double s)
 {
 	x *= s;
 	y *= s;
+	return*this;
 }
 
 void Vector2D::setSub(const Vector2D &v1, const Vector2D &v2)

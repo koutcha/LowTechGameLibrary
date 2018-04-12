@@ -6,10 +6,10 @@ public:
 	Vector2D(int x, int y);
 	Vector2D(double x, double y);
 	
-	void operator+=(const Vector2D& v);
-	void operator -=(const Vector2D& v);
-	void operator = (const Vector2D& v);
-	void operator*=(double s);
+	Vector2D& operator+=(const Vector2D& v);
+	Vector2D& operator -=(const Vector2D& v);
+	Vector2D& operator = (const Vector2D& v);
+	Vector2D& operator*=(double s);
 	void setSub(const Vector2D&, const Vector2D&);
 	void setAdd(const Vector2D&, const Vector2D&);
 

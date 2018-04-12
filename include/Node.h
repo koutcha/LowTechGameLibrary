@@ -55,6 +55,7 @@ public:
 	const Vector3D* getRotation()const;
 	const Vector3D* getScale()const;
 	const string* getName()const;
+	Batch::ShadingMode getShader()const;
 	void writeChildrenConsole() const;
 	
 };

@@ -77,22 +77,22 @@ GraphicsDatabase::GraphicsDatabase(const char * filename)
 
 GraphicsDatabase::~GraphicsDatabase()
 {
-	for (int i = 0; i < batches.size(); ++i) {
+	for (unsigned i = 0; i < batches.size(); ++i) {
 		SAFE_DELETE(batches[i]);
 	}
-	for (int i = 0; i < textures.size(); ++i) {
+	for (unsigned i = 0; i < textures.size(); ++i) {
 		SAFE_DELETE(textures[i]);
 	}
-	for (int i = 0; i < vertexBuffers.size(); ++i){
+	for (unsigned i = 0; i < vertexBuffers.size(); ++i){
 		SAFE_DELETE(vertexBuffers[i]);
 	}
-	for (int i = 0; i < indexBuffers.size(); ++i) {
+	for (unsigned i = 0; i < indexBuffers.size(); ++i) {
 		SAFE_DELETE(indexBuffers[i]);
 	}
-	for (int i = 0; i < treeTemplates.size(); ++i) {
+	for (unsigned i = 0; i < treeTemplates.size(); ++i) {
 		SAFE_DELETE(treeTemplates[i]);
 	}
-	for (int i = 0; i < animations.size(); ++i) {
+	for (unsigned i = 0; i < animations.size(); ++i) {
 		SAFE_DELETE(animations[i]);
 	}
 }
@@ -129,7 +129,7 @@ const Batch * GraphicsDatabase::getBatch(const char * name) const
 
 const MyTexture * GraphicsDatabase::getTexture(const char * name) const
 {
-	for (int i = 0; i < textures.size(); ++i) {
+	for (unsigned i = 0; i < textures.size(); ++i) {
 		if (*textures[i]->getName() == name) {
 			return textures[i];
 		}

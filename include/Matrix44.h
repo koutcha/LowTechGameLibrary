@@ -1,6 +1,5 @@
 #ifndef MATRIX44_H
 #define MATRIX44_H
-class Vector3D;
 class Matrix34;
 class Matrix44 {
 private:
